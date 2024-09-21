@@ -2,7 +2,7 @@
 
 import {ref} from "vue";
 import {ExternalData} from "@/types/type";
-import axios from "@/plugins/axios";
+import axios from "axios";
 
 const headers = [
   { title: "번호", align: 'start', sortable : true , key: 'uid' },
@@ -150,11 +150,11 @@ const items = ref<ExternalData[]>([
 
 ] as ExternalData[])
 
-// API 통신 해야함
 const callServer = async () =>{
-  await axios.get(
-      'http://localhost:8080/board',
-  )
+  let response = await axios.get(`/test`)
+  .then(response =>{
+    console.log(response.data)
+  })
 }
 
 </script>
@@ -207,6 +207,3 @@ const callServer = async () =>{
   </VTable>
   </VRow>
 </template>
-
-<style scoped>
-</style>
