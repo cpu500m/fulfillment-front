@@ -3,7 +3,9 @@
 </script>
 
 <template>
-    메인화면데스
+  <VSheet class="main-container">
+  <h1>로케이션 데스</h1>
+  </VSheet>
 </template>
 
 <style scoped>
