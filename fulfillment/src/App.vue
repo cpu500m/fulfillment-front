@@ -3,30 +3,49 @@ import SideBar from "@/components/SideBar.vue";
 import {ref, onMounted, computed} from 'vue';
 import {useRoute} from "vue-router";
 
-const route = useRoute(); // 현재 라우트 정보를 가져옵니다.
+const route = useRoute();
 
-const sidebarWidth = ref<number>(0); // 초기 사이드바 너비를 0으로 설정
 
-// 사이드바 너비를 동적으로 업데이트하는 함수
-const getSidebarWidth = () => {
-  const $sidebar = document.querySelector('.v-navigation-drawer__content'); // 사이드바 클래스 선택
+/*
+
+/!* 사이드바 너비 계산 *!/
+const sidebarWidth = computed(() => {
+  const $sidebar = document.querySelector('.v-navigation-drawer__content');
   if ($sidebar) {
-    sidebarWidth.value = $sidebar.clientWidth; // 사이드바의 너비를 계산하여 ref에 저장
+    return $sidebar.clientWidth;
   }
-};
-
-const mainContentWidth = computed(() =>{
-  return window.innerWidth - sidebarWidth.value
+  return 0
 })
 
+/!* 타이틀 영역 높이 계산 *!/
+const titleAreaHeight = computed(() => {
+  const $titleArea = document.querySelector('.v-toolbar__content');
+  if ($titleArea) {
+    return $titleArea.clientHeight;
+  }
+  return 0
+})
+
+const mainContentWidth = computed(()=>{
+  return window.innerWidth - sidebarWidth.value
+})
+*/
+
 onMounted(() => {
-  getSidebarWidth(); // 컴포넌트가 마운트될 때 초기 너비 설정
-  window.addEventListener('resize', getSidebarWidth); // 윈도우 크기 변경 시 사이드바 너비 업데이트
+  let $appObject = document.getElementById('app');
+
+  if ($appObject) {
+    $appObject.style.padding = '0';
+    $appObject.style.margin = '0';
+  }
 });
+
+//next -- main content의 padding을 적당히 줘서 sideBar바로 옆 영역부터 메인영역이 차지하도록 하기.
 </script>
 
 
 <template>
+  <VResponsive>
   <VApp>
     <vAppBar
         class="app-bar"
@@ -53,19 +72,20 @@ onMounted(() => {
 
     </vAppBar>
     <SideBar/>
-    <VMain
-        :width=mainContentWidth>
+    <VMain>
       <vContainer>
-        <RouterView />
+        <RouterView/>
       </vContainer>
     </VMain>
   </VApp>
+  </VResponsive>
 </template>
 
 <style scoped>
 .app-bar {
   border-bottom: 1px solid #197423;
 }
+
 .appbar-title {
   color: #197423;
   font-weight: bold;
